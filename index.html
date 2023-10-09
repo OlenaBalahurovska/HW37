@@ -4,9 +4,115 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #calculator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 200px;
+        }
+
+        #rangeInput {
+            width: 100%;
+        }
+
+        #diagram-container {
+            width: 20px;
+            height: 150px;
+            margin: 10px;
+            background-color: rgb(255, 255, 255);
+            border: 1px solid #000;
+            position: relative;
+            transform: rotateX(180deg);
+        }
+
+        #greenBlock {
+            background-color: green;
+            height: 0;
+        }
+
+        #redBlock {
+            background-color: red;
+            height: 0;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 5px;
+        }
+    </style>
 </head>
 <body>
-    
+    <div id="calculator">
+        <label for="rangeInput">Оберіть значення:</label>
+        <input type="range" id="rangeInput" min="0" max="100" value="0">
+        <input type="number" id="numberInput" disabled>
+        <div id="diagram-container">
+            <div id="greenBlock"></div>
+            <div id="redBlock"></div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const rangeInput = document.getElementById('rangeInput');
+            const numberInput = document.getElementById('numberInput');
+            const greenBlock = document.getElementById('greenBlock');
+            const redBlock = document.getElementById('redBlock');
+
+            rangeInput.addEventListener('input', function () {
+                const rangeValue = parseInt(rangeInput.value);
+                numberInput.value = rangeValue;
+
+                const commission = calculateCommission(rangeValue);
+                const total = rangeValue + commission;
+
+                greenBlock.style.height = rangeValue + 'px';
+                redBlock.style.height = commission + 'px';
+            });
+
+            numberInput.addEventListener('input', function () {
+                const numberValue = parseInt(numberInput.value);
+
+                if (numberValue >= 0 && numberValue <= 100) {
+                    rangeInput.value = numberValue;
+
+                    const commission = calculateCommission(numberValue);
+                    const total = numberValue + commission;
+
+                    greenBlock.style.height = numberValue + 'px';
+                    redBlock.style.height = commission + 'px';
+                }
+            });
+
+            function calculateCommission(value) {
+                let commissionPercentage = 0;
+
+                if (value < 20) {
+                    commissionPercentage = 0.02;
+                } else if (value >= 20 && value < 50) {
+                    commissionPercentage = 0.04;
+                } else if (value >= 50 && value < 75) {
+                    commissionPercentage = 0.06;
+                } else if (value >= 75) {
+                    commissionPercentage = 0.08;
+                }
+
+                return value * commissionPercentage;
+            }
+        });
+    </script>
 </body>
 </html>
