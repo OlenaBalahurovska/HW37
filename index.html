@@ -83,6 +83,20 @@
                 redBlock.style.height = commission + 'px';
             });
 
+            numberInput.addEventListener('input', function () {
+                const numberValue = parseInt(numberInput.value);
+
+                if (numberValue >= 0 && numberValue <= 100) {
+                    rangeInput.value = numberValue;
+
+                    const commission = calculateCommission(numberValue);
+                    const total = numberValue + commission;
+
+                    greenBlock.style.height = numberValue + 'px';
+                    redBlock.style.height = commission + 'px';
+                }
+            });
+
             function calculateCommission(value) {
                 let commissionPercentage = 0;
 
