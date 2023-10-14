@@ -1,102 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        table {
-            border-collapse: separate;
-            border-spacing: 0;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(180, 18, 156, 0.748);
-        }
-
-        table, th, td {
-            border: none;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: center;
-            transition: background-color 0.3s;
-            cursor: pointer;
-            border-radius: 10px;
-        }
-
-        td:hover {
-            background-color: #ffbefa;
-        }
-
-        td.active {
-            background-color: #c96eb2;
-        }
-    </style>
-    <title>Таблиця з редагуванням</title>
+    <title>Таблиця 10x10</title>
 </head>
 <body>
-    <table>
-        <tr>
-            <td>Cell 1</td>
-            <td>Cell 2</td>
-            <td>Cell 3</td>
-            <td>Cell 4</td>
-            <td>Cell 5</td>
-        </tr>
-        <tr>
-            <td>Cell 6</td>
-            <td>Cell 7</td>
-            <td>Cell 8</td>
-            <td>Cell 9</td>
-            <td>Cell 10</td>
-        </tr>
-        <tr>
-            <td>Cell 11</td>
-            <td>Cell 12</td>
-            <td>Cell 13</td>
-            <td>Cell 14</td>
-            <td>Cell 15</td>
-        </tr>
-    </table>
+    <table border="1" id="myTable"></table>
 
     <script>
-        const table = document.querySelector("table");
-        table.addEventListener("click", (event) => {
-            const targetCell = event.target;
-            if (targetCell.tagName === "TD") {
-                document.querySelectorAll("td").forEach((cell) => cell.classList.remove("active"));
-                targetCell.classList.add("active");
-                const originalText = targetCell.textContent;
-                const textarea = document.createElement("textarea");
-                textarea.value = originalText;
-                const saveButton = createButton("Save", () => {
-                    targetCell.textContent = textarea.value;
-                    targetCell.appendChild(editButton);
-                    targetCell.appendChild(deleteButton);
-                });
-                const cancelButton = createButton("Cancel", () => {
-                    targetCell.textContent = originalText;
-                    targetCell.appendChild(editButton);
-                    targetCell.appendChild(deleteButton);
-                });
-                const editButton = createButton("Edit", () => {
-                    createEditControls(targetCell);
-                });
-                const deleteButton = createButton("Delete", () => {
-                    targetCell.remove();
-                });
-                targetCell.innerHTML = "";
-                [textarea, saveButton, cancelButton].forEach((element) => targetCell.appendChild(element));
-            }
-        });
+        function createTable(rows, columns) {
+            const table = document.getElementById("myTable");
 
-        function createButton(label, clickHandler) {
-            const button = document.createElement("button");
-            button.textContent = label;
-            button.addEventListener("click", clickHandler);
-            return button;
+            for (let i = 0; i < rows; i++) {
+                const row = document.createElement("tr");
+                for (let j = 0; j < columns; j++) {
+                    const cell = document.createElement("td");
+                    cell.textContent = (i * columns + j + 1).toString();
+                    row.appendChild(cell);
+                }
+                table.appendChild(row);
+            }
         }
+
+        function addTableHeaders(columns) {
+            const table = document.getElementById("myTable");
+            const headerRow = document.createElement("tr");
+
+            for (let i = 1; i <= columns; i++) {
+                const header = document.createElement("th");
+                header.textContent = "Column " + i;
+                headerRow.appendChild(header);
+            }
+
+            table.appendChild(headerRow);
+        }
+
+        addTableHeaders(10);
+        createTable(10, 10);
     </script>
 </body>
 </html>
