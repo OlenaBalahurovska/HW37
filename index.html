@@ -4,13 +4,99 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Випадкове зображення</title>
+    <style>
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(180, 18, 156, 0.748);
+        }
+
+        table, th, td {
+            border: none;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            transition: background-color 0.3s;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        td:hover {
+            background-color: #ffbefa;
+        }
+
+        td.active {
+            background-color: #c96eb2;
+        }
+    </style>
+    <title>Таблиця з редагуванням</title>
 </head>
 <body>
+    <table>
+        <tr>
+            <td>Cell 1</td>
+            <td>Cell 2</td>
+            <td>Cell 3</td>
+            <td>Cell 4</td>
+            <td>Cell 5</td>
+        </tr>
+        <tr>
+            <td>Cell 6</td>
+            <td>Cell 7</td>
+            <td>Cell 8</td>
+            <td>Cell 9</td>
+            <td>Cell 10</td>
+        </tr>
+        <tr>
+            <td>Cell 11</td>
+            <td>Cell 12</td>
+            <td>Cell 13</td>
+            <td>Cell 14</td>
+            <td>Cell 15</td>
+        </tr>
+    </table>
 
-    
     <script>
+        const table = document.querySelector("table");
+        table.addEventListener("click", (event) => {
+            const targetCell = event.target;
+            if (targetCell.tagName === "TD") {
+                document.querySelectorAll("td").forEach((cell) => cell.classList.remove("active"));
+                targetCell.classList.add("active");
+                const originalText = targetCell.textContent;
+                const textarea = document.createElement("textarea");
+                textarea.value = originalText;
+                const saveButton = createButton("Save", () => {
+                    targetCell.textContent = textarea.value;
+                    targetCell.appendChild(editButton);
+                    targetCell.appendChild(deleteButton);
+                });
+                const cancelButton = createButton("Cancel", () => {
+                    targetCell.textContent = originalText;
+                    targetCell.appendChild(editButton);
+                    targetCell.appendChild(deleteButton);
+                });
+                const editButton = createButton("Edit", () => {
+                    createEditControls(targetCell);
+                });
+                const deleteButton = createButton("Delete", () => {
+                    targetCell.remove();
+                });
+                targetCell.innerHTML = "";
+                [textarea, saveButton, cancelButton].forEach((element) => targetCell.appendChild(element));
+            }
+        });
 
+        function createButton(label, clickHandler) {
+            const button = document.createElement("button");
+            button.textContent = label;
+            button.addEventListener("click", clickHandler);
+            return button;
+        }
     </script>
 </body>
 </html>
