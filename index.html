@@ -4,9 +4,34 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Таблиця 10x10</title>
 </head>
 <body>
-    
+    <table border="1">
+        <tr>
+            <th>Column 1</th>
+            <th>Column 2</th>
+            <th>Column 3</th>
+            <th>Column 4</th>
+            <th>Column 5</th>
+            <th>Column 6</th>
+            <th>Column 7</th>
+            <th>Column 8</th>
+            <th>Column 9</th>
+            <th>Column 10</th>
+        </tr>
+        
+        <script>
+            let count = 1;
+            for (let i = 0; i < 10; i++) {
+                document.write("<tr>");
+                for (let j = 0; j < 10; j++) {
+                    document.write("<td>" + count + "</td>");
+                    count++;
+                }
+                document.write("</tr>");
+            }
+        </script>
+    </table>
 </body>
 </html>
