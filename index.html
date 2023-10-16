@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function HTMLElementInput(tagName) {
+            const element = document.createElement(tagName);
+
+            element.value = '';
+
+            element.setValue = function(value) {
+                this.value = value;
+            };
+
+            element.render = function() {
+                console.log('Input Element: ' + this.value);
+            };
+
+            element.rotate = function(degrees) {
+                this.style.transform = `rotate(${degrees}deg)`;
+            };
+
+            return element;
+        }
+
+        const inputElement = new HTMLElementInput('input');
+        inputElement.setValue('Sample Text');
+        inputElement.render(); 
+        inputElement.rotate(45); 
+
+        document.body.appendChild(inputElement);
+    </script>
+</body>
+</html>
