@@ -1,14 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #categories,
+        #products,
+        #productDetails {
+            width: 30%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        #products,
+        #productDetails {
+            margin-left: 20px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #4c8eaf;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #b0eaff;
+        }
+
+        #buyButton {
+            background-color: #cb00b6;
+        }
+
+        #buyButton:hover {
+            background-color: #ffa7e2;
+        }
+    </style>
 </head>
+
 <body>
+    <div id="categories"></div>
+    <div id="products"></div>
+    <div id="productDetails"></div>
+    <button id="buyButton">Купити</button>
+
     <script>
-        
+        fetch("https://fakestoreapi.com/products/categories")
+            .then(response => response.json())
+            .then(categories => {
+                var categoriesDiv = document.getElementById("categories");
+                categories.forEach(category => {
+                    var categoryButton = document.createElement("button");
+                    categoryButton.textContent = category;
+                    categoryButton.addEventListener("click", function () {
+                        showProducts(category);
+                    });
+                    categoriesDiv.appendChild(categoryButton);
+                });
+            })
+            .catch(error => console.error("Error:", error));
+
+        // Функція для відображення товарів вибраної категорії
+        function showProducts(category) {
+            fetch(`https://fakestoreapi.com/products/category/${category}`)
+                .then(response => response.json())
+                .then(products => {
+                    var productsDiv = document.getElementById("products");
+                    productsDiv.innerHTML = ""; // Очистити попередні вміст
+                    products.forEach(product => {
+                        var productButton = document.createElement("button");
+                        productButton.textContent = product.title;
+                        productButton.addEventListener("click", function () {
+                            showProductDetails(product.id);
+                        });
+                        productsDiv.appendChild(productButton);
+                    });
+                })
+                .catch(error => console.error("Error:", error));
+        }
+
+        // Функція для відображення інформації про обраний товар
+        function showProductDetails(productId) {
+            fetch(`https://fakestoreapi.com/products/${productId}`)
+                .then(response => response.json())
+                .then(productDetails => {
+                    var productDetailsDiv = document.getElementById("productDetails");
+                    productDetailsDiv.innerHTML = ""; // Очистити попередні вміст
+                    var productTitle = document.createElement("h2");
+                    productTitle.textContent = productDetails.title;
+                    productDetailsDiv.appendChild(productTitle);
+                    var productDescription = document.createElement("p");
+                    productDescription.textContent = productDetails.description;
+                    productDetailsDiv.appendChild(productDescription);
+                    // Додати обробник кліку на кнопку "Купити"
+                    document.getElementById("buyButton").addEventListener("click", function () {
+                        // Відобразити повідомлення про покупку
+                        alert("Товар куплений!");
+                        // Повернути інтерфейс до вихідного стану
+                        productDetailsDiv.innerHTML = "";
+                    });
+                })
+                .catch(error => console.error("Error:", error));
+        }
     </script>
 </body>
 </html>
